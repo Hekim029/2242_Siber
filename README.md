@@ -51,6 +51,6 @@ python main.py
 📄 diagnostic_train.py: Modelin zayıf noktalarını bulan doktorumuz.
 📄 test_et.py: Performans ölçümcümüz.
 📄 final_stress_test.py: Sistemi donanımsal olarak terleten stres testimiz.
-📄 final_plots.py: Görsel sanat yönetmenimiz.
+📄 final_plots.py: Görsel sanat yönetmenimiz.  
 
 final_plots.py: Doğruluk oranları ve grafiksel çıktı üreten dosya.
