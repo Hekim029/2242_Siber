@@ -2,73 +2,55 @@
 Askeri IoT Ağlarında Gerçek Zamanlı Saldırı Tespit ve
 Siber Savunma Sistemi
 
-Bu proje, Askeri IoBT (Muharebe Alanı Nesnelerinin İnterneti) ağlarında ve kısıtlı donanım kaynaklarına sahip uç cihazlarda (Edge) çalışmak üzere optimize edilmiş otonom bir saldırı tespit sistemidir. Sistem; ARP Zehirlenmesi (ARP Spoofing) ve Dağıtık Servis Dışı Bırakma (DDoS-SYN) saldırılarını, hafifletilmiş makine öğrenmesi algoritmaları (LightGBM/XGBoost) ile milisaniyeler içerisinde tespit eder.
+Bu proje, Askeri IoBT (Muharebe Alanı Nesnelerinin İnterneti) ağlarında ve kısıtlı donanım kaynaklarına sahip uç cihazlarda (Edge) otonom çalışmak üzere tasarlandı! 🛡️ Sistemimiz; ARP Zehirlenmesi ve DDoS-SYN gibi sinsi saldırıları, LightGBM/XGBoost gibi hafif makine öğrenmesi algoritmalarıyla milisaniyeler içinde avlıyor. ⚡
 
-Teknik Yığın ve Gereksinimler
+🛠️ Teknik Yığın ve Gereksinimler
+Sistemin fişek gibi çalışması için şunlar lazım:
+🐍 Python 3.8+
+📡 Scapy: Canlı ağ trafiğini dinleyip paketleri koklamak için.
+🧠 LightGBM / XGBoost: Hafif ama ölümcül sınıflandırma modellerimiz.
+📊 Pandas & Numpy: Veri işleme ve matris cambazlıkları.
+⚙️ Scikit-learn: Model metrikleri ve ön işleme.
+📈 Matplotlib & Seaborn: O havalı performans grafiklerini çizmek için.
 
-Sistemin kararlı çalışması için aşağıdaki kütüphanelerin yüklü olması gerekmektedir:
-
-Python 3.8+
-
-Scapy: Gerçek zamanlı ağ trafiği dinleme ve paket analizi için.
-
-LightGBM / XGBoost: Hafifletilmiş ve yüksek performanslı sınıflandırma modelleri için.
-
-Pandas & Numpy: Veri işleme ve matris operasyonları için.
-
-Scikit-learn: Model değerlendirme metrikleri ve ön işleme için.
-
-Matplotlib & Seaborn: Performans grafiklerinin üretilmesi için.
-
-Kurulum Adımları
-
-Projeyi çalıştırmak için aşağıdaki adımları sırasıyla takip ediniz:
-
-Depoyu Klonlayın:
+⚙️ Kurulum Adımları (Hadi Başlayalım!)
+1️⃣ Depoyu Klonlayın:
 git clone https://github.com/emryigitt/2242_Siber.git
 cd 2242_Siber
 
-Sanal Ortam Oluşturun ve Aktif Edin (Önerilir):
+2️⃣ Sanal Ortam Oluşturun (Ortalık karışmasın):
 python -m venv venv
 Windows için: .\venv\Scripts\activate
 Linux/Mac için: source venv/bin/activate
 
-Gerekli Kütüphaneleri Kurun:
+3️⃣ Kütüphaneleri Yükleyin:
 pip install scapy lightgbm xgboost pandas numpy matplotlib seaborn scikit-learn
 
-Ağ İzinlerini Yapılandırın:
-main.py dosyası ağ trafiğini dinlediği için yönetici izinlerine (root/administrator) ihtiyaç duyar. Terminali yetkili olarak çalıştırdığınızdan emin olun.
+4️⃣ İzinleri Verin:
+main.py ağı dinleyeceği için "Yönetici (Root/Admin)" izinlerine bayılır. Terminali yetkili açmayı unutmayın! 👮‍♂️
 
-Çalıştırma ve Kullanım Sırası
+🚀 Çalıştırma Sırası
 
-Proje modüllerini şu sırayla kullanabilirsiniz:
-
-Eğitim (Training): Modelleri eğitmek ve hibrit mimariyi oluşturmak için:
+Eğitim Zamanı 🏋️‍♂️: Modelleri eğitip kas yapmak için:
 python hybrid_train.py
 
-Test ve Analiz: Eğitilen modelin başarısını ve hata payını görmek için:
+Test ve Analiz 🧪: Başarımızı ve hatalarımızı görmek için:
 python test_et.py
 
-Görselleştirme: Karmaşıklık matrisi ve performans grafiklerini üretmek için:
+Grafikler 📉: Sonuçları havalı görsellere dökmek için:
 python final_plots.py
 
-Canlı Tespit (Deployment): Sistemi sahada/canlı ağda başlatmak için:
+Canlı Sahaya Çıkış ⚔️: Nöbeti başlatmak için:
 python main.py
 
-Dosya Yapısı
-
-data/: Eğitimde kullanılan ağ trafiği veri setleri.
-
-models/: Eğitilmiş model dosyalarının saklandığı dizin.
-
-main.py: Gerçek zamanlı ağ dinleme ve saldırı tespit mekanizmasını başlatan ana dosya.
-
-hybrid_train.py: Edge-AI uyumlu model eğitim dosyası.
-
-diagnostic_train.py: Modelin zayıf noktalarını tespit eden teşhis eğitimi.
-
-test_et.py: Model test ve performans ölçüm betiği.
-
-final_stress_test.py: Kısıtlı donanımlar için CPU/RAM ve gecikme stres testleri.
+📂 Dosya Yapımız (Kim Nerede?)
+📁 data/: Eğitimde kullandığımız veri setlerimiz.
+📁 models/: Eğitilmiş canavar gibi modellerimiz burada yatar.
+📄 main.py: Ağın nöbetçisi, ana dosyamız.
+📄 hybrid_train.py: Edge-AI uyumlu model antrenörümüz.
+📄 diagnostic_train.py: Modelin zayıf noktalarını bulan doktorumuz.
+📄 test_et.py: Performans ölçümcümüz.
+📄 final_stress_test.py: Sistemi donanımsal olarak terleten stres testimiz.
+📄 final_plots.py: Görsel sanat yönetmenimiz.
 
 final_plots.py: Doğruluk oranları ve grafiksel çıktı üreten dosya.
