@@ -6,9 +6,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import confusion_matrix
 
-print("Veriler ve kayıtlı model yükleniyor...")
-
-# 1. Sadece veriyi okuyoruz (EĞİTİM YOK)
 path = 'data/' 
 all_files = glob.glob(os.path.join(path, "*.csv"))
 li = []
@@ -35,14 +32,14 @@ onemli_sutunlar = ['Rate', 'IAT', 'Header_Length', 'rst_count', 'Duration',
 X = df_ultimate[onemli_sutunlar]
 y = df_ultimate['Label']
 
-# 2. Kaydettiğimiz o "mühürlü" modeli çağırıyoruz
+# Modeli yükleme işlemi
 model = joblib.load("models/hybridefender_ULTIMATE_CERTIFIED.pkl")
 
-# 3. Hemen tahmin yapıp grafikleri çizdiriyoruz
+# Grafikleri çizme işlemi
 print("Grafikler çiziliyor...")
 y_pred = model.predict(X)
 
-# --- MATRİS GRAFİĞİ ---
+# Matris grafiği
 plt.figure(figsize=(10, 7))
 cm = confusion_matrix(y, y_pred)
 sns.heatmap(cm, annot=True, fmt='d', cmap='Greens', xticklabels=model.classes_, yticklabels=model.classes_)
@@ -50,7 +47,7 @@ plt.title('HybriDefender Final Karmaşıklık Matrisi')
 plt.savefig('models/final_confusion_matrix.png')
 plt.show()
 
-# --- ÖNEM SIRASI GRAFİĞİ ---
+# Özellik önem sırasını görselleştirme
 importance = pd.DataFrame({'Etki': model.feature_importances_, 'Parametre': onemli_sutunlar})
 importance = importance.sort_values(by='Etki', ascending=False)
 plt.figure(figsize=(12, 6))

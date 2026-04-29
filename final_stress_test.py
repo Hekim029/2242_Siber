@@ -6,26 +6,21 @@ import os
 import time
 from lightgbm import LGBMClassifier
 from sklearn.model_selection import KFold, cross_val_score
-from tqdm import tqdm # İlerleme çubuğu için
+from tqdm import tqdm
 
-# 1. VERİ HAVUZUNUN TAMAMINI YÜKLEME
 path = 'data/' 
 all_files = glob.glob(os.path.join(path, "*.csv"))
 li = []
 
-print("\n--- [ULTIMATE STRESS TEST BAŞLADI] ---")
 print(f"Toplam {len(all_files)} dosya taranıyor...")
 
-# tqdm ile veri okuma aşamasına ilerleme çubuğu ekliyoruz
 for filename in tqdm(all_files, desc="Veriler Okunuyor", unit="dosya"):
     df = pd.read_csv(filename)
     
-    # Derin Temizlik
     df.replace([np.inf, -np.inf], np.nan, inplace=True)
     df.dropna(inplace=True)
     df.drop_duplicates(inplace=True)
-    
-    # Etiketleme mantığı
+
     dosya_adi = os.path.basename(filename).lower()
     if "benign" in dosya_adi:
         label = "NORMAL"
@@ -40,9 +35,9 @@ for filename in tqdm(all_files, desc="Veriler Okunuyor", unit="dosya"):
     li.append(df)
 
 df_ultimate = pd.concat(li, axis=0, ignore_index=True)
-print(f"\n[VERİ BİRLEŞTİRİLDİ]: Toplam {len(df_ultimate)} satır hazır.")
+print(f"\n[Veri birlestirildi]: Toplam {len(df_ultimate)} satır hazır.")
 
-# 2. ÖZELLİKLER VE HEDEF
+# Özellik Seçimi
 onemli_sutunlar = ['Rate', 'IAT', 'Header_Length', 'rst_count', 'Duration', 
                    'syn_count', 'Tot size', 'Min', 'psh_flag_number', 'Max', 
                    'Protocol Type', 'HTTPS', 'Tot sum', 'Std', 'Number']
@@ -50,7 +45,7 @@ onemli_sutunlar = ['Rate', 'IAT', 'Header_Length', 'rst_count', 'Duration',
 X = df_ultimate[onemli_sutunlar]
 y = df_ultimate['Label']
 
-# 3. MODEL TANIMLAMA
+# Final model parametreleri
 ultimate_model = LGBMClassifier(
     n_estimators=2000, 
     learning_rate=0.03, 
@@ -61,14 +56,13 @@ ultimate_model = LGBMClassifier(
     verbose=-1
 )
 
-# 4. 10-KATLI ÇAPRAZ DOĞRULAMA (İLERLEME ÇUBUĞU İLE)
+# Çapraz doğrulama
 print("\n[10-KATLI ÇAPRAZ DOĞRULAMA BAŞLATILIYOR]")
 print("Bu aşama modelin 10 kez baştan eğitilmesini içerir, en uzun süren kısımdır.")
 
 kfold = KFold(n_splits=10, shuffle=True, random_state=42)
 cv_sonuclar = []
 
-# Çapraz doğrulamayı manuel döngüye alıyoruz ki ilerlemeyi görebilelim
 for i, (train_index, test_index) in enumerate(tqdm(kfold.split(X), total=10, desc="Testler Yapılıyor", unit="aşama")):
     X_train_cv, X_test_cv = X.iloc[train_index], X.iloc[test_index]
     y_train_cv, y_test_cv = y.iloc[train_index], y.iloc[test_index]
@@ -77,7 +71,7 @@ for i, (train_index, test_index) in enumerate(tqdm(kfold.split(X), total=10, des
     skor = ultimate_model.score(X_test_cv, y_test_cv)
     cv_sonuclar.append(skor)
 
-# 5. RAPORLAMA VE KAYIT
+# Sonuçlar
 print("\n" + "="*60)
 print("HYBRIDEFENDER ULTIMATE TEST SONUÇLARI")
 print("="*60)
@@ -85,8 +79,6 @@ print(f"10 Farklı Testin Ortalaması: %{np.mean(cv_sonuclar)*100:.4f}")
 print(f"Standart Sapma (Tutarlılık): {np.std(cv_sonuclar):.6f}")
 print(f"En İyi Skor: %{np.max(cv_sonuclar)*100:.4f}")
 print("="*60)
-
-# Son bir kez tüm veriyle eğitip mühürle
 print("\nFinal modeli tüm veri setiyle mühürleniyor...")
 ultimate_model.fit(X, y)
 joblib.dump(ultimate_model, "models/hybridefender_ULTIMATE_CERTIFIED.pkl")
@@ -96,10 +88,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import confusion_matrix
 
-# --- GRAFİK BÖLÜMÜ ---
-print("\n[GRAFİKLER OLUŞTURULUYOR]...")
+# Grafikleri çizme işlemi
+print("\nGrafikler ciziliyor...")
 
-# 1. Karmaşıklık Matrisi
+# Karmaşıklık matrisi grafiği
 plt.figure(figsize=(12, 8))
 y_pred = ultimate_model.predict(X)
 cm = confusion_matrix(y, y_pred)
@@ -112,7 +104,7 @@ plt.xlabel('Tahmin Edilen Sınıf')
 plt.savefig('models/final_confusion_matrix.png')
 plt.show()
 
-# 2. Özellik Önem Sırası
+# Özellik önem sırasını görselleştirme
 importance = pd.DataFrame({'Etki': ultimate_model.feature_importances_, 'Parametre': onemli_sutunlar})
 importance = importance.sort_values(by='Etki', ascending=False)
 plt.figure(figsize=(12, 6))
