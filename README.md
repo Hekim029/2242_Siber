@@ -51,11 +51,19 @@ Canlı Sahaya Çıkış ⚔️: Nöbeti başlatmak için:
 Bash
 python main.py
 📂 Dosya Yapımız (Kim Nerede?)
+
 📁 data/ : Eğitimde kullandığımız veri setlerimiz.
+
 📁 models/ : Eğitilmiş canavar gibi modellerimiz burada yatar.
+
 📄 main.py : Ağın nöbetçisi, ana dosyamız.
+
 📄 hybrid_train.py : Edge-AI uyumlu model antrenörümüz.
+
 📄 diagnostic_train.py : Modelin zayıf noktalarını bulan doktorumuz.
+
 📄 test_et.py : Performans ölçümcümüz.
+
 📄 final_stress_test.py : Sistemi donanımsal olarak terleten stres testimiz.
+
 📄 final_plots.py : Görsel sanat yönetmenimiz.
